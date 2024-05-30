@@ -1,40 +1,54 @@
-import altair as alt
-import numpy as np
-import pandas as pd
 import streamlit as st
+import tensorflow as tf
+import numpy as np
 
-"""
-# Welcome to Streamlit!
+#Tensorflow Model Prediction
+def model_prediction(test_image):
+    model = tf.keras.models.load_model("test_final_model.keras")
+    image = tf.keras.preprocessing.image.load_img(test_image,target_size=(160,160))
+    input_arr = tf.keras.preprocessing.image.img_to_array(image)
+    input_arr = np.array([input_arr]) #convert single image to batch
+    predictions = model.predict(input_arr)
+    return np.argmax(predictions) #return index of max element
 
-Edit `/streamlit_app.py` to customize this app to your heart's desire :heart:.
-If you have any questions, checkout our [documentation](https://docs.streamlit.io) and [community
-forums](https://discuss.streamlit.io).
+#Sidebar
+st.sidebar.title("Dashboard")
+app_mode = st.sidebar.selectbox("Select Page",["Home","About Project","Prediction"])
 
-In the meantime, below is an example of what you can do with just a few lines of code:
-"""
+#Main Page
+if(app_mode=="Home"):
+    st.header("Florist aid flower recognition webapp")
+    #to be determined
+    #image_path = "home_img.jpg"
+    #st.image(image_path)
 
-num_points = st.slider("Number of points in spiral", 1, 10000, 1100)
-num_turns = st.slider("Number of turns in spiral", 1, 300, 31)
+#About Project
+elif(app_mode=="About Project"):
+    st.header("About Project")
+    st.subheader("About Dataset")
+    st.text("This dataset contains images of the following flowers:")
+    st.code("fruits- banana, apple, pear, grapes, orange, kiwi, watermelon, pomegranate, pineapple, mango.")
+    st.subheader("Content")
+    st.text("This dataset was split into three folders:")
+    st.text("1. train (x images each)")
+    st.text("2. test (x images each)")
+    st.text("3. validation (x images each)")
 
-indices = np.linspace(0, 1, num_points)
-theta = 2 * np.pi * num_turns * indices
-radius = indices
-
-x = radius * np.cos(theta)
-y = radius * np.sin(theta)
-
-df = pd.DataFrame({
-    "x": x,
-    "y": y,
-    "idx": indices,
-    "rand": np.random.randn(num_points),
-})
-
-st.altair_chart(alt.Chart(df, height=700, width=700)
-    .mark_point(filled=True)
-    .encode(
-        x=alt.X("x", axis=None),
-        y=alt.Y("y", axis=None),
-        color=alt.Color("idx", legend=None, scale=alt.Scale()),
-        size=alt.Size("rand", legend=None, scale=alt.Scale(range=[1, 150])),
-    ))
+#Prediction Page
+elif(app_mode=="Prediction"):
+    st.header("Model Prediction")
+    test_image = st.file_uploader("Choose an Image:")
+    if(st.button("Show Image")):
+        st.image(test_image,width=4,use_column_width=True)
+    #Predict button
+    if(st.button("Predict")):
+        st.snow()
+        st.write("Our Prediction")
+        result_index = model_prediction(test_image)
+        #Reading Labels
+        with open("labels.txt") as f:
+            content = f.readlines()
+        label = []
+        for i in content:
+            label.append(i[:-1])
+        st.success("Model is Predicting it's a {}".format(label[result_index]))
