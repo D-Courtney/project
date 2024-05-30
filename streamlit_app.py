@@ -27,12 +27,12 @@ elif(app_mode=="About Project"):
     st.header("About Project")
     st.subheader("About Dataset")
     st.text("This dataset contains images of the following flowers:")
-    st.code("fruits- banana, apple, pear, grapes, orange, kiwi, watermelon, pomegranate, pineapple, mango.")
+    st.code("astilbe ,bellflower ,black_eyed_susan ,calendula ,california_poppy ,carnation ,common_daisy ,coreopsis ,dandelion ,iris ,rose ,sunflower ,tulip ,water_lily")
     st.subheader("Content")
     st.text("This dataset was split into three folders:")
-    st.text("1. train (x images each)")
-    st.text("2. test (x images each)")
-    st.text("3. validation (x images each)")
+    st.text("1. train (9542 images split between the 14 flowers)")
+    st.text("2. test (2052 images split between the 14 flowers)")
+    st.text("3. validation (2048 images split between the 14 flowers)")
 
 #Prediction Page
 elif(app_mode=="Prediction"):
