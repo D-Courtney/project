@@ -18,9 +18,9 @@ app_mode = st.sidebar.selectbox("Select Page",["Home","About Project","Predictio
 #Main Page
 if(app_mode=="Home"):
     st.header("Florist aid flower recognition webapp")
-    #to be determined
-    #image_path = "home_img.jpg"
-    #st.image(image_path)
+   
+    image_path = "home_img.jpg"
+    st.image(image_path)
 
 #About Project
 elif(app_mode=="About Project"):
